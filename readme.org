@@ -1,0 +1,55 @@
+:PROPERTIES:
+:ID:       D84F58F0-D387-4B6F-94EF-4A24B015CF8D
+:END:
+#+title: aider-comint package for Emacs README
+
+* Overview
+The Aider-Comint package provides an enhanced interaction with the Comint mode in Emacs, allowing for more efficient and productive command-line sessions within the editor.
+
+* Features
+- Seamlessly integrates with existing Comint buffers.
+- Provides enhanced auto-completion for commands.
+- Supports custom command history navigation.
+- Allows for syntax highlighting of command outputs.
+- Configurable shortcuts for frequently used commands.
+
+* Installation
+You can install the Aider-Comint package via MELPA using the following steps:
+
+1. Add MELPA to your package archives if you haven't already:
+
+   #+BEGIN_SRC emacs-lisp
+   (require 'package)
+   (add-to-list 'package-archives
+                '("melpa" . "https://melpa.org/packages/") t)
+   (package-initialize)
+   #+END_SRC
+
+2. Install Aider-Comint:
+
+   #+BEGIN_SRC emacs-lisp
+   (package-refresh-contents)
+   (package-install 'aider-comint)
+   #+END_SRC
+
+* Usage
+To start using Aider-Comint, simply open a Comint buffer (e.g., Shell, Python shell) and enjoy the enhanced features. You can customize settings via:
+
+   M-x customize-group RET aider-comint RET
+
+* Configuration
+You can configure Aider-Comint by adding the following to your Emacs configuration:
+
+   #+BEGIN_SRC emacs-lisp
+   (setq aider-comint-custom-setting t)
+   #+END_SRC
+
+* Contributing
+Contributions are welcome! Please feel free to submit issues or pull requests on the GitHub repository.
+
+* License
+This project is licensed under the MIT License. See the LICENSE file for more details.
+
+* Acknowledgements
+Thanks to the Emacs community for their continuous support and contributions.
+
