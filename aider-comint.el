@@ -2,7 +2,8 @@
   "A major mode for interacting with Aider's REPL."
   (define-key aider-comint-mode-map (kbd "C-c C-c") 'aider-comint-chat)
   (define-key aider-comint-mode-map (kbd "C-c C-a") 'aider-comint-architect)
-  (define-key aider-comint-mode-map (kbd "C-c C-m") 'aider-comint-model))
+  (define-key aider-comint-mode-map (kbd "C-c C-m") 'aider-comint-model)
+  (define-key aider-comint-mode-map (kbd "C-c C-s") 'aider-comint-select-model))
 
 (defun aider-comint-start ()
   "Start the aider process in a Comint buffer using  bash as the shell."
@@ -95,7 +96,13 @@
   (interactive "sModel name: ")
   (aider-comint-send-command (concat "/model " model-name)))
 
-
+(defun aider-comint-select-model ()
+  "Select a model from a dropdown menu."
+  (interactive)
+  (let* (
+	 (models '("gemini/gemini-1.5-flash" "gpt-3.5-turbo" "gpt-4"))
+	 (selected-model (completing-read "Select a model: " models nil t)))
+    (aider-comint-send-command (concat "/model " selected-model))))
 
 ;; * Backlog
 ;; ** TODO Color code keywords
