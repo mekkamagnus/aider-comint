@@ -2,9 +2,10 @@
 :ID:       D84F58F0-D387-4B6F-94EF-4A24B015CF8D
 :END:
 #+title: aider-comint package for Emacs README
+#+description: An Emacs comint for Aider chat
 
 * Overview
-The Aider-Comint package provides an enhanced interaction with the Comint mode in Emacs, allowing for more efficient and productive command-line sessions within the editor.
+The Aider-Comint package provides an enhanced interaction with the Comint mode in Emacs, allowing for more efficient and productive Aider command-line sessions within the EMACS.
 
 * Features
 - Seamlessly integrates with existing Comint buffers.

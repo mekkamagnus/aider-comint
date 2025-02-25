@@ -100,7 +100,29 @@
   "Select a model from a dropdown menu."
   (interactive)
   (let* (
-	 (models '("gemini/gemini-1.5-flash" "gpt-3.5-turbo" "gpt-4"))
+	 (models '("gemini/gemini-1.5-flash-latest"
+		   "gemini/gemini-1.5-pro-latest"
+		   "openai/o1-preview"
+		   "openai/o1-mini"
+		   "openai/gpt-4o"
+		   "openai/gpt-4o-mini"
+		   "deepseek/deepseek-chat"
+		   "deepseek/deepseek-coder"
+		   "anthropic/claude-3-5-sonnet-20240620"
+		   "anthropic/claude-3-haiku-20240307"
+		   "anthropic/claude-3-opus-20240229"
+		   "groq/gemma-7b-it"
+		   "groq/gemma2-9b-it"
+		   "groq/llama-3.1-405b-reasoning"
+		   "groq/llama-3.1-70b-versatile"
+		   "groq/llama-3.1-8b-instant"
+		   "groq/llama2-70b-4096"
+		   "groq/llama3-70b-8192"
+		   "groq/llama3-8b-8192"
+		   "groq/llama3-groq-70b-8192-tool-use-preview"
+		   "groq/llama3-groq-8b-8192-tool-use-preview"
+		   "groq/mixtral-8x7b-32768"
+		   ))
 	 (selected-model (completing-read "Select a model: " models nil t)))
     (aider-comint-send-command (concat "/model " selected-model))))
 
