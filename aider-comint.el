@@ -18,13 +18,16 @@ and then delegates to the standard comint output filter."
   (let ((formatted (aider-comint-format-output string)))
     (comint-output-filter proc formatted)))
 
+(defvar aider-comint-last-directory nil
+  "Stores the last directory used for an aider session.")
+
 (defun aider-comint-start ()
-  "Start the aider process in a Comint buffer using bash as the shell."
+  "Start the aider process in a Comint buffer using bash as the shell.
+Prompts for a directory to start the aider session in, defaulting to the
+last used directory or current directory."
   (interactive)
-  (let ((buffer-name "*aider*")
-        (shell-file-name "/bin/bash")
-        (explicit-shell-file-name "/bin/bash")
-        (process-environment (cons "SHELL=/bin/bash" process-environment)))
+  (let* ((buffer-name "*aider*")
+         (default-directory (aider-comint--select-directory))
     (condition-case err
         (progn
           (make-comint buffer-name "/Users/mekael/.local/bin/aider" nil "--model" "gemini/gemini-1.5-flash")
@@ -142,3 +145,14 @@ If COMMAND is empty, no action is taken."
     (aider-comint-send-command (concat "/model " selected-model))))
 
 
+(defun aider-comint--select-directory ()
+  "Prompt for a directory with validation and history.
+Defaults to last used directory or current directory."
+  (let ((dir (read-directory-name 
+              "Select directory: " 
+              aider-comint-last-directory
+              nil
+              t)))
+    (when (file-directory-p dir)
+      (setq aider-comint-last-directory dir)
+      dir)))
