@@ -27,11 +27,7 @@ and then delegates to the standard comint output filter."
 	(explicit-shell-file-name "/bin/bash")
 	(process-environment (cons "SHELL=/bin/bash" process-environment))
 	)
-    (apply 'make-comint
-           buffer-name            ;; Process name
-           "/usr/local/bin/aider" ;; Path to bash
-           nil
-           '("--model" "gemini/gemini-1.5-flash"))
+    (make-comint buffer-name "/usr/local/bin/aider" nil "--model" "gemini/gemini-1.5-flash")
     (let* ((proc (get-buffer-process (format "*%s*" buffer-name))))
       (if proc
           (progn
@@ -46,7 +42,7 @@ and then delegates to the standard comint output filter."
 If COMMAND is empty, no action is taken."
   (interactive "sCommand: ")
   (unless (string-blank-p command)
-    (comint-send-string (get-buffer-process "**aider**") (concat command "\n"))))
+    (comint-send-string (get-buffer-process "*aider*") (concat command "\n"))))
 
 ;; TODO: Add ERT tests for:
 ;;   - Basic command handling in `aider-comint-send-command`
@@ -92,7 +88,7 @@ If COMMAND is empty, no action is taken."
     ;; Send the message to the aider REPL
     (aider-comint-send-command (concat "/ask " message))
     ;; Kill the chat buffer after sending
-    (kill-buffer)
+    (kill-buffer (current-buffer))
 
     ))
 
