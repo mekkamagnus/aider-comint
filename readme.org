@@ -122,6 +122,14 @@ This project is licensed under the MIT License. See the LICENSE file for more de
 - [ ] Add plugin system
 - [ ] Create package documentation
 
+** Backlog
+- [ ] Add ERT tests for:
+  - Basic command handling in =aider-comint-send-command=
+  - Output processing in =aider-comint-process-output=
+  - Integration tests for REPL interactions
+- [ ] Color code keywords
+- [ ] Improve models dropdown list
+
 * Debugging
 
 ** Common Issues
