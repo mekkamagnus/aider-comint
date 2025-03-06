@@ -39,9 +39,7 @@ and then delegates to the standard comint output filter."
             (message "Aider process started successfully!")
             (pop-to-buffer (format "*%s*" buffer-name))
             (aider-comint-mode))
-        (message "Failed to start aider process.")))
-      (message "Failed to start aider process."))
-    )) 
+        (message "Failed to start aider process."))))
 
 (defun aider-comint-send-command (command)
   "Send a COMMAND to the Aider REPL.
