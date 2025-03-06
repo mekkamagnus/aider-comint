@@ -129,6 +129,9 @@ This project is licensed under the MIT License. See the LICENSE file for more de
   - Integration tests for REPL interactions
 - [ ] Color code keywords
 - [ ] Improve models dropdown list
+  - Add better categorization of models
+  - Add model descriptions/tags
+  - Add model version information
 
 * Debugging
 

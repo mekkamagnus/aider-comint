@@ -44,10 +44,6 @@ If COMMAND is empty, no action is taken."
   (unless (string-blank-p command)
     (comint-send-string (get-buffer-process "*aider*") (concat command "\n"))))
 
-;; TODO: Add ERT tests for:
-;;   - Basic command handling in `aider-comint-send-command`
-;;   - Output processing in `aider-comint-process-output`
-;;   - Integration tests for REPL interactions
 
 (defun aider-comint-code (message)
   "Send a /code MESSAGE to the aider REPL."
@@ -142,9 +138,5 @@ If COMMAND is empty, no action is taken."
 		   ))
 	 (selected-model (completing-read "Select a model: " models nil t)))
     (aider-comint-send-command (concat "/model " selected-model))))
-
-;; * Backlog
-;; ** TODO Color code keywords
-;; ** TODO Models dropdown list
 
 
