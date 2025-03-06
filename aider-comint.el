@@ -40,7 +40,7 @@ last used directory or current directory."
                   (aider-comint-mode))
               (message "Failed to start aider process."))))
       (file-error
-       (message "Aider executable not found at /Users/mekael/.local/bin/aider. Please ensure aider is installed and in your PATH.")))))
+       (message "Aider executable not found at /Users/mekael/.local/bin/aider. Please ensure aider is installed and in your PATH."))))))
 
 (defun aider-comint-send-command (command)
   "Send a COMMAND to the Aider REPL.
