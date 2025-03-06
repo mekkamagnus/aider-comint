@@ -92,6 +92,70 @@ Contributions are welcome! Please feel free to submit issues or pull requests on
 * License
 This project is licensed under the MIT License. See the LICENSE file for more details.
 
+* Development Guidelines
+
+** Code Structure
+- Follow Emacs Lisp best practices
+- Use consistent naming conventions (prefix with aider-comint-)
+- Modularize code into logical components
+
+** Error Handling
+- Use condition-case for graceful error recovery
+- Provide meaningful error messages
+- Validate inputs before processing
+
+** Testing
+- Write ERT tests for all major functions
+- Include edge case testing
+- Test interactive functions
+- Verify command output handling
+
+** Documentation
+- Add docstrings to all functions
+- Document internal APIs
+- Maintain changelog
+
+* API Reference
+
+** Core Functions
+- aider-comint-send-command :: Send commands to comint buffer
+- aider-comint-process-output :: Handle command output
+- aider-comint-parse-response :: Parse command responses
+
+** Utility Functions
+- aider-comint-validate-input :: Validate user input
+- aider-comint-format-output :: Format output for display
+- aider-comint-history-management :: Manage command history
+
+* Roadmap
+
+** Short-term Goals
+- [ ] Implement basic command handling
+- [ ] Add output formatting
+- [ ] Create test suite
+
+** Medium-term Goals
+- [ ] Add command history management
+- [ ] Implement auto-completion
+- [ ] Add syntax highlighting
+
+** Long-term Goals
+- [ ] Support multiple comint buffers
+- [ ] Add plugin system
+- [ ] Create package documentation
+
+* Debugging
+
+** Common Issues
+- Command not recognized
+- Output formatting errors
+- History management problems
+
+** Debugging Tools
+- Use =M-x toggle-debug-on-error=
+- Check *Messages* buffer
+- Use =edebug= for step-by-step debugging
+
 * Acknowledgements
 Thanks to the Emacs community for their continuous support and contributions.
 
