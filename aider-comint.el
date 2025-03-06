@@ -27,7 +27,7 @@ Prompts for a directory to start the aider session in, defaulting to the
 last used directory or current directory."
   (interactive)
   (let* ((buffer-name "*aider*")
-         (default-directory (aider-comint--select-directory))
+         (default-directory (aider-comint--select-directory)))
     (condition-case err
         (progn
           (make-comint buffer-name "/Users/mekael/.local/bin/aider" nil "--model" "gemini/gemini-1.5-flash")
@@ -40,7 +40,7 @@ last used directory or current directory."
                   (aider-comint-mode))
               (message "Failed to start aider process."))))
       (file-error
-       (message "Aider executable not found at /Users/mekael/.local/bin/aider. Please ensure aider is installed and in your PATH."))))))
+       (message "Aider executable not found at /Users/mekael/.local/bin/aider. Please ensure aider is installed and in your PATH.")))))
 
 (defun aider-comint-send-command (command)
   "Send a COMMAND to the Aider REPL.
