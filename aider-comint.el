@@ -20,22 +20,24 @@ and then delegates to the standard comint output filter."
 
 (defun aider-comint-start ()
   "Start the aider process in a Comint buffer using bash as the shell."
-  (interactive) 
-  (let (
-	(buffer-name "*aider*")
-	(shell-file-name "/bin/bash")
-	(explicit-shell-file-name "/bin/bash")
-	(process-environment (cons "SHELL=/bin/bash" process-environment))
-	)
-    (make-comint buffer-name "/usr/local/bin/aider" nil "--model" "gemini/gemini-1.5-flash")
-    (let* ((proc (get-buffer-process (format "*%s*" buffer-name))))
-      (if proc
-          (progn
-            (set-process-filter proc 'aider-comint-process-output)
-            (message "Aider process started successfully!")
-            (pop-to-buffer (format "*%s*" buffer-name))
-            (aider-comint-mode))
-        (message "Failed to start aider process.")))))
+  (interactive)
+  (let ((buffer-name "*aider*")
+        (shell-file-name "/bin/bash")
+        (explicit-shell-file-name "/bin/bash")
+        (process-environment (cons "SHELL=/bin/bash" process-environment)))
+    (condition-case err
+        (progn
+          (make-comint buffer-name "/usr/local/bin/aider" nil "--model" "gemini/gemini-1.5-flash")
+          (let* ((proc (get-buffer-process (format "*%s*" buffer-name))))
+            (if proc
+                (progn
+                  (set-process-filter proc 'aider-comint-process-output)
+                  (message "Aider process started successfully!")
+                  (pop-to-buffer (format "*%s*" buffer-name))
+                  (aider-comint-mode))
+              (message "Failed to start aider process."))))
+      (file-error
+       (message "Aider executable not found at /usr/local/bin/aider. Please ensure aider is installed and in your PATH.")))))
 
 (defun aider-comint-send-command (command)
   "Send a COMMAND to the Aider REPL.
