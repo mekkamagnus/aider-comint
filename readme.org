@@ -49,6 +49,7 @@ You can configure Aider-Comint by adding the following to your Emacs configurati
 Contributions are welcome! Please feel free to submit issues or pull requests on the GitHub repository.
 
 * License
+# What does this license mean AI?
 This project is licensed under the MIT License. See the LICENSE file for more details.
 
 * Acknowledgements
