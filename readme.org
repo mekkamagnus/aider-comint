@@ -38,6 +38,22 @@ To start using Aider-Comint, simply open a Comint buffer (e.g., Shell, Python sh
 
    M-x customize-group RET aider-comint RET
 
+* Slash Commands
+
+| Command       | Description                                      |
+|---------------+--------------------------------------------------|
+| /add          | Add files to the chat session                   |
+| /clear        | Clear the chat history                          |
+| /diff         | Show a diff of all changes made in the session  |
+| /drop         | Remove files from the chat session              |
+| /exit         | Exit the chat session                           |
+| /help         | Show this help message                          |
+| /ls           | List files in the chat session                  |
+| /run          | Run shell command and show output               |
+| /save         | Save all changes made in the session            |
+| /undo         | Undo the last change                            |
+| /voice        | Use voice mode for chat                         |
+
 * Configuration
 You can configure Aider-Comint by adding the following to your Emacs configuration:
 
@@ -49,7 +65,6 @@ You can configure Aider-Comint by adding the following to your Emacs configurati
 Contributions are welcome! Please feel free to submit issues or pull requests on the GitHub repository.
 
 * License
-# What does this license mean AI?
 This project is licensed under the MIT License. See the LICENSE file for more details.
 
 * Acknowledgements
