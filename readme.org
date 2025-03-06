@@ -92,28 +92,6 @@ Contributions are welcome! Please feel free to submit issues or pull requests on
 * License
 This project is licensed under the MIT License. See the LICENSE file for more details.
 
-* Development Guidelines
-
-** Code Structure
-- Follow Emacs Lisp best practices
-- Use consistent naming conventions (prefix with aider-comint-)
-- Modularize code into logical components
-
-** Error Handling
-- Use condition-case for graceful error recovery
-- Provide meaningful error messages
-- Validate inputs before processing
-
-** Testing
-- Write ERT tests for all major functions
-- Include edge case testing
-- Test interactive functions
-- Verify command output handling
-
-** Documentation
-- Add docstrings to all functions
-- Document internal APIs
-- Maintain changelog
 
 * API Reference
 
