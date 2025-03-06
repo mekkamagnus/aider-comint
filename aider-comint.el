@@ -5,8 +5,21 @@
   (define-key aider-comint-mode-map (kbd "C-c C-m") 'aider-comint-model)
   (define-key aider-comint-mode-map (kbd "C-c C-s") 'aider-comint-select-model))
 
+(defun aider-comint-format-output (output)
+  "Apply basic formatting to OUTPUT from the Aider process.
+Currently, this MVP implementation returns OUTPUT unchanged.
+Future improvements can add syntax highlighting or keyword coloring."
+  output)
+
+(defun aider-comint-process-output (proc string)
+  "Process and format the output STRING from the Aider process PROC.
+This function applies basic formatting via `aider-comint-format-output`
+and then delegates to the standard comint output filter."
+  (let ((formatted (aider-comint-format-output string)))
+    (comint-output-filter proc formatted)))
+
 (defun aider-comint-start ()
-  "Start the aider process in a Comint buffer using  bash as the shell."
+  "Start the aider process in a Comint buffer using bash as the shell."
   (interactive) 
   (let (
 	(buffer-name "*aider*")
@@ -19,18 +32,28 @@
            "/usr/local/bin/aider" ;; Path to bash
            nil
            '("--model" "gemini/gemini-1.5-flash"))
-    (if (get-buffer-process (format "*%s*" buffer-name))
-        (progn
-          (message "Aider process started successfully!")
-          (pop-to-buffer (format "*%s*" buffer-name)) ;; Switch to the Aider-Chat buffer
-	  (aider-comint-mode))  
+    (let* ((proc (get-buffer-process (format "*%s*" buffer-name))))
+      (if proc
+          (progn
+            (set-process-filter proc 'aider-comint-process-output)
+            (message "Aider process started successfully!")
+            (pop-to-buffer (format "*%s*" buffer-name))
+            (aider-comint-mode))
+        (message "Failed to start aider process.")))
       (message "Failed to start aider process."))
     )) 
 
 (defun aider-comint-send-command (command)
-  "Send a COMMAND to the aider REPL."
+  "Send a COMMAND to the Aider REPL.
+If COMMAND is empty, no action is taken."
   (interactive "sCommand: ")
-  (comint-send-string (get-buffer-process "**aider**") (concat command "\n")))
+  (unless (string-blank-p command)
+    (comint-send-string (get-buffer-process "**aider**") (concat command "\n"))))
+
+;; TODO: Add ERT tests for:
+;;   - Basic command handling in `aider-comint-send-command`
+;;   - Output processing in `aider-comint-process-output`
+;;   - Integration tests for REPL interactions
 
 (defun aider-comint-code (message)
   "Send a /code MESSAGE to the aider REPL."
