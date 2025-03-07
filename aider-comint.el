@@ -1,5 +1,6 @@
 (define-derived-mode aider-comint-mode comint-mode "Aider"
   "A major mode for interacting with Aider's REPL."
+  (ansi-color-for-comint-mode-on)  ;; Enable ANSI color processing
   (define-key aider-comint-mode-map (kbd "C-c C-c") 'aider-comint-chat)
   (define-key aider-comint-mode-map (kbd "C-c C-a") 'aider-comint-architect)
   (define-key aider-comint-mode-map (kbd "C-c C-m") 'aider-comint-model)
@@ -7,15 +8,13 @@
 
 (defun aider-comint-format-output (output)
   "Apply basic formatting to OUTPUT from the Aider process.
-Currently, this MVP implementation returns OUTPUT unchanged.
-Future improvements can add syntax highlighting or keyword coloring."
+Preserves ANSI color codes for terminal display."
   output)
 
 (defun aider-comint-process-output (proc string)
   "Process and format the output STRING from the Aider process PROC.
-This function applies basic formatting via `aider-comint-format-output`
-and then delegates to the standard comint output filter."
-  (let ((formatted (aider-comint-format-output string)))
+Applies ANSI color processing before passing to comint output filter."
+  (let ((formatted (ansi-color-apply (aider-comint-format-output string))))
     (comint-output-filter proc formatted)))
 
 (defvar aider-comint-last-directory nil
