@@ -19,6 +19,11 @@
   (define-key aider-comint-mode-map (kbd "C-c C-s") 'aider-comint-select-model)
   (define-key aider-comint-mode-map (kbd "C-c C-t") 'aider-comint-test-colors))
 
+(defun aider-comint-chat (message)
+  "Send a chat MESSAGE to the aider REPL."
+  (interactive "sChat message: ")
+  (aider-comint-send-command message))
+
 
 (defun aider-comint-process-output (proc string)
   "Process and format the output STRING from the Aider process PROC.
@@ -48,7 +53,7 @@ last used directory or current directory."
     (condition-case err
         (progn
           ;; Rule: Modularity - Use `make-comint` for creating the comint process.
-          (make-comint "aider" buffer-name aider-executable nil)
+          (make-comint-in-buffer "aider" buffer-name aider-executable nil)
           (let* ((proc (get-buffer-process buffer-name))
                  (buffer (get-buffer buffer-name)))
             (if proc
@@ -69,7 +74,10 @@ last used directory or current directory."
 If COMMAND is empty, no action is taken."
   (interactive "sCommand: ")
   (unless (string-blank-p command)
-    (comint-send-string (get-buffer-process "*aider*") (concat command "\n"))))
+    (let ((proc (get-buffer-process "*aider*")))
+      (if proc
+          (comint-send-string proc (concat command "\n"))
+        (message "Aider process not running. Start it with M-x aider-comint-start")))))
 
 
 (defun aider-comint-code (message)
@@ -114,6 +122,12 @@ If COMMAND is empty, no action is taken."
     (kill-buffer (current-buffer))
 
     ))
+
+(defun aider-chat-input-cancel ()
+  "Cancel the chat input and close the buffer."
+  (interactive)
+  (kill-buffer (current-buffer))
+  (message "Chat input canceled."))
 
 ;; (defun aider-comint-ask (message)
 ;;   "Send a /ask MESSAGE to the aider REPL."
@@ -209,14 +223,6 @@ If COMMAND is empty, no action is taken."
   "Verify if ANSI color support is properly configured."
   (interactive)
   (message "ANSI color support: %s"
-           (if (and (boundp 'ansi-color-for-comint-mode)
-                   ansi-color-for-comint-mode)
-               "Enabled" "Disabled")))
-
-(defun aider-comint-check-color-support ()
-  "Verify if ANSI color support is properly configured."
-  (interactive)
-  (message "ANSI color support: %s" 
            (if (and (boundp 'ansi-color-for-comint-mode)
                    ansi-color-for-comint-mode)
                "Enabled" "Disabled")))
