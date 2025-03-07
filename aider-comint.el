@@ -1,9 +1,16 @@
 (define-derived-mode aider-comint-mode comint-mode "Aider"
   "A major mode for interacting with Aider's REPL."
   ;; Rule: Initialize color handling properly
-  (setq-local comint-output-filter-functions '(ansi-color-process-output))
-  (setq-local ansi-color-for-comint-mode t)
+  (setq-local comint-output-filter-functions 
+              '(ansi-color-process-output
+                comint-postoutput-scroll-to-bottom))
+  (setq-local ansi-color-for-comint-mode 'filter)
   (setq-local comint-process-echoes nil)
+  ;; Add syntax table for better text properties
+  (modify-syntax-entry ?\" "\"")
+  (modify-syntax-entry ?\\ "\\")
+  ;; Set up faces
+  (setq-local font-lock-defaults '(nil t))
   (define-key aider-comint-mode-map (kbd "C-c C-c") 'aider-comint-chat)
   (define-key aider-comint-mode-map (kbd "C-c C-a") 'aider-comint-architect)
   (define-key aider-comint-mode-map (kbd "C-c C-m") 'aider-comint-model)
@@ -184,6 +191,14 @@ If COMMAND is empty, no action is taken."
     (ansi-color-apply-on-region (point-min) (point-max))
     (aider-comint-mode)
     (pop-to-buffer (current-buffer))))
+
+(defun aider-comint-check-color-support ()
+  "Verify if ANSI color support is properly configured."
+  (interactive)
+  (message "ANSI color support: %s" 
+           (if (and (boundp 'ansi-color-for-comint-mode)
+                   ansi-color-for-comint-mode)
+               "Enabled" "Disabled")))
 
 (defun aider-comint-check-color-support ()
   "Verify if ANSI color support is properly configured."
