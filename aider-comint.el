@@ -24,7 +24,8 @@ Applies ANSI color processing before passing to comint output filter."
     (let ((moving (= (point) (process-mark proc))))
       (save-excursion
         (goto-char (process-mark proc))
-        ;; Rule: Error Handling - Coerce any non-string output into a string using `format "%s"`.
+        ;; Rule: Testing - Add debugging to check if the function is being called and what the value of `string` is.
+        (message "aider-comint-process-output called with string: %s" string)
         (let ((str (format "%s" string)))
           ;; Rule: Testing - Add debugging to check the type of `string`.
           (message "Type of string: %s" (type-of string))
