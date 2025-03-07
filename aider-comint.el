@@ -1,10 +1,9 @@
 (define-derived-mode aider-comint-mode comint-mode "Aider"
   "A major mode for interacting with Aider's REPL."
   ;; Rule: Initialize color handling properly
-  (setq-local comint-output-filter-functions 
+  (setq-local comint-output-filter-functions
               '(ansi-color-process-output
                 comint-postoutput-scroll-to-bottom))
-  (setq-local ansi-color-for-comint-mode 'filter)
   (setq-local comint-process-echoes nil)
   ;; Add syntax table for better text properties
   (modify-syntax-entry ?\" "\"")
@@ -21,14 +20,13 @@
 (defun aider-comint-process-output (proc string)
   "Process and format the output STRING from the Aider process PROC.
 Applies ANSI color processing before passing to comint output filter."
-  (let ((formatted (ansi-color-apply string)))  ;; Apply colors directly
-    (with-current-buffer (process-buffer proc)
-      (let ((moving (= (point) (process-mark proc))))
-        (save-excursion
-          (goto-char (process-mark proc))
-          (insert formatted)
-          (set-marker (process-mark proc) (point)))
-        (if moving (goto-char (process-mark proc)))))))
+  (with-current-buffer (process-buffer proc)
+    (let ((moving (= (point) (process-mark proc))))
+      (save-excursion
+        (goto-char (process-mark proc))
+        (insert string)
+        (set-marker (process-mark proc) (point)))
+      (if moving (goto-char (process-mark proc))))))
 
 (defvar aider-comint-last-directory nil
   "Stores the last directory used for an aider session.")
