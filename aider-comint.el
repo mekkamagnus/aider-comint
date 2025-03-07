@@ -48,7 +48,7 @@ last used directory or current directory."
     (condition-case err
         (progn
           ;; Rule: Modularity - Use `make-comint` for creating the comint process.
-          (make-comint "aider" buffer-name aider-executable nil "--model" "gemini/gemini-1.5-flash")
+          (make-comint "aider" buffer-name aider-executable nil)
           (let* ((proc (get-buffer-process buffer-name))
                  (buffer (get-buffer buffer-name)))
             (if proc
