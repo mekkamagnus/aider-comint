@@ -24,7 +24,8 @@ Applies ANSI color processing before passing to comint output filter."
     (let ((moving (= (point) (process-mark proc))))
       (save-excursion
         (goto-char (process-mark proc))
-        (insert string)
+        ;; Rule: Modularity - Reuse the built-in `ansi-color-process-output` to handle ANSI codes.
+        (insert (ansi-color-process-output string))
         (set-marker (process-mark proc) (point)))
       (if moving (goto-char (process-mark proc))))))
 
