@@ -35,8 +35,8 @@ Applies ANSI color processing before passing to comint output filter."
             (moving (= (point) (process-mark proc))))
         (save-excursion
           (goto-char (process-mark proc))
-          ;; Rule: Modularity - Use `ansi-color-process-string` for processing ANSI color codes.
-          (insert (ansi-color-process-string string nil (process-buffer proc)))
+          ;; Rule: Modularity - Use `ansi-color-apply-on-string` for processing ANSI color codes.
+          (insert (ansi-color-apply-on-string string))
           (set-marker (process-mark proc) (point)))
         (if moving (goto-char (process-mark proc)))))))
 
