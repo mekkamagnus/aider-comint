@@ -1,27 +1,22 @@
 (define-derived-mode aider-comint-mode comint-mode "Aider"
   "A major mode for interacting with Aider's REPL."
-  (ansi-color-for-comint-mode-on)  ;; Enable ANSI color processing
+  (setq comint-output-filter-functions '(ansi-color-process-output))
   (define-key aider-comint-mode-map (kbd "C-c C-c") 'aider-comint-chat)
   (define-key aider-comint-mode-map (kbd "C-c C-a") 'aider-comint-architect)
   (define-key aider-comint-mode-map (kbd "C-c C-m") 'aider-comint-model)
   (define-key aider-comint-mode-map (kbd "C-c C-s") 'aider-comint-select-model)
   (define-key aider-comint-mode-map (kbd "C-c C-t") 'aider-comint-test-colors))
 
-(defun aider-comint-format-output (output)
-  "Apply basic formatting to OUTPUT from the Aider process.
-Preserves ANSI color codes for terminal display."
-  output)
 
 (defun aider-comint-process-output (proc string)
   "Process and format the output STRING from the Aider process PROC.
 Applies ANSI color processing before passing to comint output filter."
-  (let ((formatted (ansi-color-apply (aider-comint-format-output string))))
+  (let ((formatted (ansi-color-apply string)))  ;; Apply colors directly
     (with-current-buffer (process-buffer proc)
       (let ((moving (= (point) (process-mark proc))))
         (save-excursion
           (goto-char (process-mark proc))
           (insert formatted)
-          (ansi-color-apply-on-region (process-mark proc) (point))
           (set-marker (process-mark proc) (point)))
         (if moving (goto-char (process-mark proc)))))))
 
