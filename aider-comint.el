@@ -4,7 +4,8 @@
   (define-key aider-comint-mode-map (kbd "C-c C-c") 'aider-comint-chat)
   (define-key aider-comint-mode-map (kbd "C-c C-a") 'aider-comint-architect)
   (define-key aider-comint-mode-map (kbd "C-c C-m") 'aider-comint-model)
-  (define-key aider-comint-mode-map (kbd "C-c C-s") 'aider-comint-select-model))
+  (define-key aider-comint-mode-map (kbd "C-c C-s") 'aider-comint-select-model)
+  (define-key aider-comint-mode-map (kbd "C-c C-t") 'aider-comint-test-colors))
 
 (defun aider-comint-format-output (output)
   "Apply basic formatting to OUTPUT from the Aider process.
@@ -143,6 +144,40 @@ If COMMAND is empty, no action is taken."
 	 (selected-model (completing-read "Select a model: " models nil t)))
     (aider-comint-send-command (concat "/model " selected-model))))
 
+
+(defun aider-comint-test-colors ()
+  "Display all ANSI color codes to test theme interference."
+  (interactive)
+  (with-current-buffer (get-buffer-create "*ANSI Color Test*")
+    (erase-buffer)
+    (insert "ANSI Color Test:\n\n")
+    ;; Basic colors
+    (insert (propertize "Normal text\n" 'face 'default))
+    (insert "\u001b[31mRed text\u001b[0m\n")
+    (insert "\u001b[32mGreen text\u001b[0m\n")
+    (insert "\u001b[33mYellow text\u001b[0m\n")
+    (insert "\u001b[34mBlue text\u001b[0m\n")
+    (insert "\u001b[35mMagenta text\u001b[0m\n")
+    (insert "\u001b[36mCyan text\u001b[0m\n")
+    (insert "\u001b[37mWhite text\u001b[0m\n\n")
+    ;; Bright colors
+    (insert "\u001b[91mBright red text\u001b[0m\n")
+    (insert "\u001b[92mBright green text\u001b[0m\n")
+    (insert "\u001b[93mBright yellow text\u001b[0m\n")
+    (insert "\u001b[94mBright blue text\u001b[0m\n")
+    (insert "\u001b[95mBright magenta text\u001b[0m\n")
+    (insert "\u001b[96mBright cyan text\u001b[0m\n")
+    (insert "\u001b[97mBright white text\u001b[0m\n\n")
+    ;; Background colors
+    (insert "\u001b[41mRed background\u001b[0m\n")
+    (insert "\u001b[42mGreen background\u001b[0m\n")
+    (insert "\u001b[43mYellow background\u001b[0m\n")
+    (insert "\u001b[44mBlue background\u001b[0m\n")
+    (insert "\u001b[45mMagenta background\u001b[0m\n")
+    (insert "\u001b[46mCyan background\u001b[0m\n")
+    (insert "\u001b[47mWhite background\u001b[0m\n")
+    (aider-comint-mode)
+    (pop-to-buffer (current-buffer))))
 
 (defun aider-comint--select-directory ()
   "Prompt for a directory with validation and history.
