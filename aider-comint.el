@@ -48,7 +48,7 @@ last used directory or current directory."
     (condition-case err
         (progn
           ;; Rule: Modularity - Use `make-comint` for creating the comint process.
-          (make-comint "aider" buffer-name "/Users/mekael/.local/bin/aider" nil "--model" "gemini/gemini-1.5-flash")
+          (make-comint "aider" buffer-name aider-executable nil "--model" "gemini/gemini-1.5-flash")
           (let* ((proc (get-buffer-process buffer-name))
                  (buffer (get-buffer buffer-name)))
             (if proc
@@ -62,7 +62,7 @@ last used directory or current directory."
                   (aider-comint-mode))
               (message "Failed to start aider process."))))
       (file-error
-       (message "Aider executable not found at /Users/mekael/.local/bin/aider. Please ensure aider is installed and in your PATH.")))))
+       (message "Aider executable not found at %s. Please ensure aider is installed and in your PATH." aider-executable)))))
 
 (defun aider-comint-send-command (command)
   "Send a COMMAND to the Aider REPL.
@@ -202,10 +202,13 @@ If COMMAND is empty, no action is taken."
     (aider-comint-mode)
     (pop-to-buffer (current-buffer))))
 
+(defvar aider-executable "/Users/mekael/.local/bin/aider"
+  "Path to the aider executable.")
+
 (defun aider-comint-check-color-support ()
   "Verify if ANSI color support is properly configured."
   (interactive)
-  (message "ANSI color support: %s" 
+  (message "ANSI color support: %s"
            (if (and (boundp 'ansi-color-for-comint-mode)
                    ansi-color-for-comint-mode)
                "Enabled" "Disabled")))
