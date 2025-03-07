@@ -1,6 +1,9 @@
 (define-derived-mode aider-comint-mode comint-mode "Aider"
   "A major mode for interacting with Aider's REPL."
-  (setq comint-output-filter-functions '(ansi-color-process-output))
+  ;; Rule: Initialize color handling properly
+  (setq-local comint-output-filter-functions '(ansi-color-process-output))
+  (setq-local ansi-color-for-comint-mode t)
+  (setq-local comint-process-echoes nil)
   (define-key aider-comint-mode-map (kbd "C-c C-c") 'aider-comint-chat)
   (define-key aider-comint-mode-map (kbd "C-c C-a") 'aider-comint-architect)
   (define-key aider-comint-mode-map (kbd "C-c C-m") 'aider-comint-model)
@@ -181,6 +184,14 @@ If COMMAND is empty, no action is taken."
     (ansi-color-apply-on-region (point-min) (point-max))
     (aider-comint-mode)
     (pop-to-buffer (current-buffer))))
+
+(defun aider-comint-check-color-support ()
+  "Verify if ANSI color support is properly configured."
+  (interactive)
+  (message "ANSI color support: %s" 
+           (if (and (boundp 'ansi-color-for-comint-mode)
+                   ansi-color-for-comint-mode)
+               "Enabled" "Disabled")))
 
 (defun aider-comint--select-directory ()
   "Prompt for a directory with validation and history.
