@@ -1,10 +1,13 @@
 (define-derived-mode aider-comint-mode comint-mode "Aider"
   "A major mode for interacting with Aider's REPL."
   ;; Rule: Initialize color handling properly
+  (setq-local ansi-color-for-comint-mode t)
   (setq-local comint-output-filter-functions
               '(ansi-color-process-output
                 comint-postoutput-scroll-to-bottom))
   (setq-local comint-process-echoes nil)
+  (setq-local comint-use-prompt-regexp t)
+  (setq-local comint-prompt-regexp "^[^>\n]*> *")
   ;; Add syntax table for better text properties
   (modify-syntax-entry ?\" "\"")
   (modify-syntax-entry ?\\ "\\")
@@ -20,18 +23,17 @@
 (defun aider-comint-process-output (proc string)
   "Process and format the output STRING from the Aider process PROC.
 Applies ANSI color processing before passing to comint output filter."
-  (with-current-buffer (process-buffer proc)
-    (let ((moving (= (point) (process-mark proc))))
-      (save-excursion
-        (goto-char (process-mark proc))
-        ;; Rule: Testing - Add debugging to check if the function is being called and what the value of `string` is.
-        (message "aider-comint-process-output called with string: %s" string)
-        (let ((str (format "%s" string)))
-          ;; Rule: Testing - Add debugging to check the type of `string`.
-          (message "Type of string: %s" (type-of string))
-          (insert (ansi-color-process-output str)))
-        (set-marker (process-mark proc) (point)))
-      (if moving (goto-char (process-mark proc))))))
+  (when (and (process-live-p proc)
+             (buffer-live-p (process-buffer proc)))
+    (with-current-buffer (process-buffer proc)
+      (let ((inhibit-read-only t)
+            (moving (= (point) (process-mark proc))))
+        (save-excursion
+          (goto-char (process-mark proc))
+          ;; Rule: Modularity - Use `ansi-color-process-string` for processing ANSI color codes.
+          (insert (ansi-color-process-string string nil (process-buffer proc)))
+          (set-marker (process-mark proc) (point)))
+        (if moving (goto-char (process-mark proc)))))))
 
 (defvar aider-comint-last-directory nil
   "Stores the last directory used for an aider session.")
@@ -45,13 +47,18 @@ last used directory or current directory."
          (default-directory (aider-comint--select-directory)))
     (condition-case err
         (progn
-          (make-comint buffer-name "/Users/mekael/.local/bin/aider" nil "--model" "gemini/gemini-1.5-flash")
-          (let* ((proc (get-buffer-process (format "*%s*" buffer-name))))
+          ;; Rule: Modularity - Use `make-comint` for creating the comint process.
+          (make-comint "aider" buffer-name "/Users/mekael/.local/bin/aider" nil "--model" "gemini/gemini-1.5-flash")
+          (let* ((proc (get-buffer-process buffer-name))
+                 (buffer (get-buffer buffer-name)))
             (if proc
                 (progn
+                  ;; Ensure ansi-color-for-comint-mode is buffer-local
+                  (with-current-buffer buffer
+                    (setq ansi-color-for-comint-mode t))
                   (set-process-filter proc 'aider-comint-process-output)
                   (message "Aider process started successfully!")
-                  (pop-to-buffer (format "*%s*" buffer-name))
+                  (pop-to-buffer buffer-name)
                   (aider-comint-mode))
               (message "Failed to start aider process."))))
       (file-error
