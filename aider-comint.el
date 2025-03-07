@@ -24,11 +24,9 @@ Applies ANSI color processing before passing to comint output filter."
     (let ((moving (= (point) (process-mark proc))))
       (save-excursion
         (goto-char (process-mark proc))
-        ;; Rule: Error Handling - Ensure the input to `ansi-color-process-output` is a string.
-        (let ((string (if (stringp string)
-                         string
-                       (prin1-to-string string))))
-         (insert (ansi-color-process-output string)))
+        ;; Rule: Error Handling - Coerce any non-string output into a string using `format "%s"`.
+        (let ((str (format "%s" string)))
+          (insert (ansi-color-process-output str)))
         (set-marker (process-mark proc) (point)))
       (if moving (goto-char (process-mark proc))))))
 
