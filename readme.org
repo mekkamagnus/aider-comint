@@ -4,21 +4,40 @@
 #+title: aider-comint package for Emacs README
 #+description: An Emacs comint for Aider chat
 
+* Table of Contents
+- [[#overview][Overview]]
+- [[#features][Features]] 
+- [[#installation][Installation]]
+- [[#usage][Usage]]
+- [[#slash-commands][Slash Commands]]
+- [[#configuration][Configuration]]
+- [[#contributing][Contributing]]
+- [[#license][License]]
+- [[#api-reference][API Reference]]
+- [[#roadmap][Roadmap]]
+- [[#debugging][Debugging]]
+- [[#acknowledgements][Acknowledgements]]
+
 * Overview
 The Aider-Comint package provides an enhanced interaction with the Comint mode in Emacs, allowing for more efficient and productive Aider command-line sessions within the EMACS.
 
 * Features
-- Seamlessly integrates with existing Comint buffers.
-- Provides enhanced auto-completion for commands.
-- Supports custom command history navigation.
-- Allows for syntax highlighting of command outputs.
-- Configurable shortcuts for frequently used commands.
+- Seamless integration with Comint buffers
+- Enhanced command auto-completion with =completion-at-point=
+- Custom command history navigation using =comint-history-isearch-backward=
+- Syntax highlighting powered by =font-lock=
+- Configurable shortcuts via =define-key=
+- Interactive command execution with =interactive=
+- Robust error handling using =condition-case=
+
+* Requirements
+- Emacs 27.1 or later
+- Comint mode enabled
+- MELPA package repository configured
 
 * Installation
-You can install the Aider-Comint package via MELPA using the following steps:
-
-1. Add MELPA to your package archives if you haven't already:
-
+** Via MELPA
+1. Add MELPA to your package archives:
    #+BEGIN_SRC emacs-lisp
    (require 'package)
    (add-to-list 'package-archives
@@ -26,11 +45,22 @@ You can install the Aider-Comint package via MELPA using the following steps:
    (package-initialize)
    #+END_SRC
 
-2. Install Aider-Comint:
-
+2. Install package:
    #+BEGIN_SRC emacs-lisp
    (package-refresh-contents)
    (package-install 'aider-comint)
+   #+END_SRC
+
+** Manual Installation
+1. Clone the repository:
+   #+BEGIN_SRC shell
+   git clone https://github.com/your-repo/aider-comint.git
+   #+END_SRC
+
+2. Add to load path:
+   #+BEGIN_SRC emacs-lisp
+   (add-to-list 'load-path "/path/to/aider-comint")
+   (require 'aider-comint)
    #+END_SRC
 
 * Usage
@@ -78,6 +108,14 @@ To start using Aider-Comint, simply open a Comint buffer (e.g., Shell, Python sh
 | /undo           | Undo the last git commit if it was done by aider                            |
 | /voice          | Record and transcribe voice input                                           |
 | /web            | Scrape a webpage, convert to markdown and send in a message                 |
+
+* Keybindings
+| Keybinding | Command                     | Description                      |
+|------------+-----------------------------+----------------------------------|
+| C-c C-c    | aider-comint-send-command   | Send current command             |
+| C-c C-r    | aider-comint-reset          | Reset comint buffer              |
+| C-c C-h    | aider-comint-show-history   | Show command history             |
+| C-c C-a    | aider-comint-auto-complete  | Trigger auto-completion          |
 
 * Configuration
 You can configure Aider-Comint by adding the following to your Emacs configuration:
